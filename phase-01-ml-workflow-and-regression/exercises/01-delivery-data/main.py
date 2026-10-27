@@ -1,6 +1,6 @@
-
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 delivery_data = pd.read_csv("delivery.csv")
 
@@ -17,3 +17,22 @@ X_train, X_validation, Y_train, Y_validation = train_test_split(
     X_train, Y_train, test_size=0.25, random_state=42
 )
 
+median_distance = X_train["distance_km"].median()
+
+# fill the missing data in distance_km colum of X_test
+X_test["distance_km"] = X_test["distance_km"].fillna(median_distance)
+
+# encoder
+encoder = OneHotEncoder(handle_unknown="ignore")
+
+encoder.fit(X_train[["weather"]])
+
+# encoded weather
+train_encoded_weather = encoder.transform(X_train[["weather"]])
+validation_encoded_weather = encoder.transform(X_validation[["weather"]])
+test_encoded_weather = encoder.transform(X_test[["weather"]]) 
+
+# scaler
+scaler = StandardScaler()
+
+scaler.fit(X_train[["distance_km"]])

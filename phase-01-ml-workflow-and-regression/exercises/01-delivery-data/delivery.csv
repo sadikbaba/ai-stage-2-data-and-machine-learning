@@ -1,6 +1,6 @@
 distance_km,weather,delivery_minutes
 2,clear,12
-5,rain,32
+,rain,32
 8,clear,35
 10,rain,55
 3,clear,17
