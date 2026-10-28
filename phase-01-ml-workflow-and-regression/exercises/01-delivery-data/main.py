@@ -24,15 +24,20 @@ X_test["distance_km"] = X_test["distance_km"].fillna(median_distance)
 
 # encoder
 encoder = OneHotEncoder(handle_unknown="ignore")
-
+# encode training
 encoder.fit(X_train[["weather"]])
 
 # encoded weather
 train_encoded_weather = encoder.transform(X_train[["weather"]])
 validation_encoded_weather = encoder.transform(X_validation[["weather"]])
-test_encoded_weather = encoder.transform(X_test[["weather"]]) 
+test_encoded_weather = encoder.transform(X_test[["weather"]])
 
 # scaler
 scaler = StandardScaler()
-
+# scaler training
 scaler.fit(X_train[["distance_km"]])
+
+# uses those learned numbers to convert distances into standardized values.
+train_scaler_distance = scaler.transform(X_train[["distance_km"]])
+validation_scaler_distance = scaler.transform(X_validation[["distance_km"]])
+test_scaler_distance = scaler.transform(X_test[["distance_km"]])

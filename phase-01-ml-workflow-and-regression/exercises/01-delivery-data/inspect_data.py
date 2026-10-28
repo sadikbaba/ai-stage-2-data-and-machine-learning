@@ -1,4 +1,4 @@
-from main import (
+from main import (  # noqa: I001
     X_test,
     X_train,
     X_validation,
@@ -14,6 +14,9 @@ from main import (
     validation_encoded_weather,
     x,
     y,
+    train_scaler_distance,
+    validation_scaler_distance,
+    test_scaler_distance,
 )
 
 if __name__ == "__main__":
@@ -38,7 +41,6 @@ if __name__ == "__main__":
     print("\nTrain-test split:")
     print(Y_train.shape)
     print(Y_test.shape)
-
 
     print("\nTest features:")
     print(X_test)
@@ -75,8 +77,13 @@ if __name__ == "__main__":
     print("\nValidation encoded:\n", validation_encoded_weather.toarray())
     print("\nTest encoded:\n", test_encoded_weather.toarray())
 
-
     # scaler
     print("\nscaler")
     print(scaler.mean_)
     print(scaler.scale_)
+
+    #  scaler transform
+
+    print("\nTrain scaler:\n", train_scaler_distance.toarray())
+    print("\nValidation scaler:\n", validation_scaler_distance.toarray())
+    print("\nTest scaler:\n", test_scaler_distance.toarray())
