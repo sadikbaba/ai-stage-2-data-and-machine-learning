@@ -1,7 +1,8 @@
 def calculate_mean(data):
-    return sum(data)/len(data)
+    return sum(data) / len(data)
 
-# standard scaler formula z = (x - u) / s
+
+# standard scaler formula z = (x - mean) / std
 def calculate_variance(data):
     mean = calculate_mean(data)
 
@@ -9,10 +10,11 @@ def calculate_variance(data):
     result = []
 
     for x in data:
-       ans = (x - mean) **2
-       result.append(ans)
+        ans = (x - mean) ** 2
+        result.append(ans)
 
-    return sum(result)/n
+    return sum(result) / n
+
 
 def calculate_standard_deviation(data):
     return calculate_variance(data) ** 0.5
@@ -27,17 +29,31 @@ def standardize(data, mean, std):
 
     return result
 
+
+class ManualStandardScaler:
+    def fit(self, data):
+        self.mean = calculate_mean(data)
+        self.std = calculate_standard_deviation(data)
+
+    def transform(self, data):
+        return standardize(data, self.mean, self.std)
+
+    def fit_transform(self, data):
+        self.fit(data)
+        return self.transform(data)
+
+
 if __name__ == "__main__":
     train_distances = [2, 4, 6]
-    test_distances = [8 , 10]
+    test_distances = [8, 10]
 
-    training_data_mean = calculate_mean(train_distances)
-    training_data_std = calculate_standard_deviation(train_distances)
+    # class
+    print("\nclass of standard scaler")
 
-    training_standard_scaler = standardize(train_distances, training_data_mean, training_data_std)
+    scaler = ManualStandardScaler()
 
-    test_standard_scaler = standardize(test_distances, training_data_mean, training_data_std)
+    train_scaled = scaler.fit_transform(train_distances)
+    test_scaled = scaler.transform(test_distances)
 
-
-    print("\nTraining Standard scaler:", training_standard_scaler)
-    print("\nTest standard scaler:" , test_standard_scaler)
+    print("\nTrain Standard scaler:", train_scaled)
+    print("\nTest standard scaler:", test_scaled)

@@ -22,7 +22,6 @@ def encode_one(category, categories):
     return result
 
 
-
 def encode_all(data, categories):
 
     encoded_data = []
@@ -36,19 +35,34 @@ def encode_all(data, categories):
 
     return encoded_data
 
+
 def is_known_category(category, categories):
     return category in categories
 
 
+class ManualOneHotEncoder:
+    def fit(self, data):
+        self.categories = get_unique_categories(data)
+
+    def transform(self, data):
+        return encode_all(data, self.categories)
+
+    def fit_transform(self, data):
+        self.fit(data)
+        return self.transform(data)
+
+
 if __name__ == "__main__":
-
     training_weather = ["clear", "rain", "clear"]
-    test_weather = ["rain", "snow","clear" ]
+    test_weather = ["rain", "snow", "clear"]
 
-    training_categories = get_unique_categories(training_weather)
-  
-    encoded_training = encode_all(training_weather, training_categories)
-    encoded_weather = encode_all(test_weather, training_categories)
+    # class
+    print("class of One Hot Encode\n")
+    encoder = ManualOneHotEncoder()
 
-    print("Training:",encoded_training)
-    print("\nTesting:",encoded_weather) 
+    encoded_training = encoder.fit_transform(training_weather)
+    encoded_test = encoder.transform(test_weather)
+
+    print("Categories:", encoder.categories)
+    print("Training:", encoded_training)
+    print("Testing:", encoded_test)
