@@ -1,6 +1,6 @@
 def get_unique_categories(data):
 
-    if data == []:
+    if len(data) == 0:
         return []
 
     cleaned = []

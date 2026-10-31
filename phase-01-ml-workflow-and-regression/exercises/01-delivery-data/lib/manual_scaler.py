@@ -2,13 +2,12 @@ def calculate_mean(data):
     return sum(data) / len(data)
 
 
-# standard scaler formula z = (x - mean) / std
 def calculate_variance(data):
     mean = calculate_mean(data)
 
     n = len(data)
     result = []
-
+    # formula: sum( (x - mean)**2 ) / n
     for x in data:
         ans = (x - mean) ** 2
         result.append(ans)
@@ -17,12 +16,14 @@ def calculate_variance(data):
 
 
 def calculate_standard_deviation(data):
+    # formula sqrt of variance
     return calculate_variance(data) ** 0.5
 
 
 def standardize(data, mean, std):
     result = []
 
+    # standard scaler formula z = (x - mean) / std
     for x in data:
         z = (x - mean) / std
         result.append(z)

@@ -84,6 +84,6 @@ if __name__ == "__main__":
 
     #  scaler transform
 
-    print("\nTrain scaler:\n", train_scaler_distance.toarray())
-    print("\nValidation scaler:\n", validation_scaler_distance.toarray())
-    print("\nTest scaler:\n", test_scaler_distance.toarray())
+    print("\nTrain scaler:\n", train_scaler_distance)
+    print("\nValidation scaler:\n", validation_scaler_distance)
+    print("\nTest scaler:\n", test_scaler_distance)
