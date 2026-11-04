@@ -76,3 +76,5 @@ X_validation_matrix = np.column_stack(
 )
 X_test_matrix = np.column_stack((test_scaled_distance, test_encoded_weather, test_scaled_rainy_distance))
 
+
+
