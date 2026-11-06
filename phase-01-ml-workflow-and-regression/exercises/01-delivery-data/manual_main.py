@@ -29,24 +29,17 @@ median_distance = X_train["distance_km"].median()
 X_test["distance_km"] = X_test["distance_km"].fillna(median_distance)
 
 
-
 # feature engineering: create a new feature "rainy_distance" that is the distance if the weather is rainy, otherwise 0
 X_train["rainy_distance"] = np.where(
-    X_train["weather"] == "rain",
-    X_train["distance_km"],
-    0
+    X_train["weather"] == "rain", X_train["distance_km"], 0
 )
 
 X_validation["rainy_distance"] = np.where(
-    X_validation["weather"] == "rain",
-    X_validation["distance_km"],
-    0
+    X_validation["weather"] == "rain", X_validation["distance_km"], 0
 )
 
 X_test["rainy_distance"] = np.where(
-    X_test["weather"] == "rain",
-    X_test["distance_km"],
-    0
+    X_test["weather"] == "rain", X_test["distance_km"], 0
 )
 
 
@@ -64,17 +57,26 @@ test_encoded_weather = encode.transform(X_test["weather"])
 
 # scale the rainy distance feature
 rainy_distance_scaler = ManualStandardScaler()
-train_scaled_rainy_distance = rainy_distance_scaler.fit_transform(X_train["rainy_distance"])
-validation_scaled_rainy_distance = rainy_distance_scaler.transform(X_validation["rainy_distance"])
+train_scaled_rainy_distance = rainy_distance_scaler.fit_transform(
+    X_train["rainy_distance"]
+)
+validation_scaled_rainy_distance = rainy_distance_scaler.transform(
+    X_validation["rainy_distance"]
+)
 test_scaled_rainy_distance = rainy_distance_scaler.transform(X_test["rainy_distance"])
 
 
 # matrix for machine learning
-X_train_matrix = np.column_stack((train_scaled_distance, train_encoded_weather, train_scaled_rainy_distance))
-X_validation_matrix = np.column_stack(
-    (validation_scaled_distance, validation_encoded_weather, validation_scaled_rainy_distance)
+X_train_matrix = np.column_stack(
+    (train_scaled_distance, train_encoded_weather, train_scaled_rainy_distance)
 )
-X_test_matrix = np.column_stack((test_scaled_distance, test_encoded_weather, test_scaled_rainy_distance))
-
-
-
+X_validation_matrix = np.column_stack(
+    (
+        validation_scaled_distance,
+        validation_encoded_weather,
+        validation_scaled_rainy_distance,
+    )
+)
+X_test_matrix = np.column_stack(
+    (test_scaled_distance, test_encoded_weather, test_scaled_rainy_distance)
+)

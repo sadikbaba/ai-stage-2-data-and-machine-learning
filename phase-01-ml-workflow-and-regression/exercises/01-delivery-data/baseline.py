@@ -10,21 +10,20 @@ Y_pred = []
 for _ in range(len(Y_validation)):
     Y_pred.append(average_delivery_time)
 
-actuals =  list(Y_validation)
+actuals = list(Y_validation)
 errors = []
 
 # Evaluation — Mean Absolute Error (pure Python)
 # formula: MAE = (1/n) * sum(|actual - predicted|)
-for  i in range(len(Y_validation)):
+for i in range(len(Y_validation)):
     actual = actuals[i]
     predicted = Y_pred[i]
-    error = abs(actual - predicted) 
+    error = abs(actual - predicted)
     errors.append(error)
 
-mae = sum(errors) / len(errors) # mean absolute error
+mae = sum(errors) / len(errors)  # mean absolute error
 
 if __name__ == "__main__":
-  
     print("\nAverage delivery time (learned from train):")
     print(average_delivery_time)
 

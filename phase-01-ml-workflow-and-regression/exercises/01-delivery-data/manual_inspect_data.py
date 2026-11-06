@@ -11,7 +11,6 @@ from manual_main import (  # noqa: I001
     X_train_matrix,
     X_validation_matrix,
     X_test_matrix,
-
     X_train,
     X_validation,
     X_test,
@@ -39,6 +38,11 @@ if __name__ == "__main__":
     print("\nTest matrix:\n", X_test_matrix)
 
     print("\nManual feature engineering:")
-    print("\n X train columns:\n", X_train[["distance_km", "weather", "rainy_distance"]])
-    print("\n X validation columns:\n", X_validation[["distance_km", "weather", "rainy_distance"]])
+    print(
+        "\n X train columns:\n", X_train[["distance_km", "weather", "rainy_distance"]]
+    )
+    print(
+        "\n X validation columns:\n",
+        X_validation[["distance_km", "weather", "rainy_distance"]],
+    )
     print("\n X test columns:\n", X_test[["distance_km", "weather", "rainy_distance"]])
