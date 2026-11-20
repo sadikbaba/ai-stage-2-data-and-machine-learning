@@ -1,19 +1,12 @@
 # transpose(X)
-
-# Matrix multiplication for XᵀX
-
-# Matrix-vector multiplication for Xᵀy
-
+# matrix_multiplication(Xᵀ, X)
+# matrix_vector_multiplication(Xᵀ, y)
 # minor_matrix(A, row_to_remove, col_to_remove)
-
 # determinant()
-
-# Cofactor matrix
-
-# Adjugate and inverse()
-
+# cofactor_matrix()
+# adjugate()
+# inverse()
 # fit()
-
 # predict()
 
 import numpy as np
@@ -44,7 +37,7 @@ class ManualLinearRegression:
 
         rows_A = len(Xt)
         cols_A = len(Xt[0])
-        
+
         rows_B = len(X)
         cols_B = len(X[0])
 
@@ -63,8 +56,144 @@ class ManualLinearRegression:
 
         return result
 
+    def matrix_vector_multiplication(self, Xt, y):
+
+        if len(Xt[0]) != len(y):
+            raise ValueError("Incompatible dimensions.")
+
+        result = []
+        for i in range(len(Xt)):
+            total = 0
+            for j in range(len(y)):
+                total += Xt[i][j] * y[j]
+            result.append(total)
+        return result
+
+    def minor_matrix(self, A, row_to_remove, col_to_remove):
+
+        if not A:
+            return []
+        result = []
+        for i in range(len(A)):
+            if i == row_to_remove:
+                continue
+            new_row = []
+            for j in range(len(A[i])):
+                if j == col_to_remove:
+                    continue
+                new_row.append(A[i][j])
+            result.append(new_row)
+        return result
+
+    def determinant(self, A):
+
+        if not A:
+            return 0
+
+        n = len(A)
+        if any(len(row) != n for row in A):
+            raise ValueError("Matrix must be square")
+        if n == 1:
+            return A[0][0]
+
+        if n == 2:
+            return A[0][0] * A[1][1] - A[0][1] * A[1][0]
+
+        if n == 3:
+            total = 0
+            for i in range(len(A[0])):
+                sign = -1 if i % 2 else 1
+                minor = self.minor_matrix(A, 0, i)
+                total += sign * A[0][i] * self.determinant(minor)
+            return total
+
+    def cofactor_matrix(self, A):
+
+        result = []
+
+        for i in range(len(A)):
+            new_row = []
+            for j in range(len(A[i])):
+                minor = self.minor_matrix(A, i, j)
+                ans = self.determinant(minor)
+                sign = 0
+                if (i + j) % 2 == 0:
+                    sign = 1
+                else:
+                    sign = -1
+
+                new_row.append(sign * ans)
+            result.append(new_row)
+
+        return result
+
+    def adjugate(self, A):
+        cofactor = self.cofactor_matrix(A)
+        return self.transpose(cofactor)
+
+    def inverse(self, A):
+        det = self.determinant(A)
+        if det == 0:
+            raise ValueError("No inverse")
+
+        adj = self.adjugate(A)
+        result = []
+        for i in range(len(adj)):
+            new_row = []
+            for j in range(len(adj[i])):
+                new_row.append(adj[i][j] / det)
+            result.append(new_row)
+        return result
+
     def fit(self, X, Y):
-        pass
+
+        if not X or not X[0]:
+            raise ValueError("X must contain samples and features")
+
+        if len(X) != len(Y):
+            raise ValueError("Number of samples in X must match number of targets in Y")
+        for i in range(len(X)):
+            sample = X[i]
+            if len(sample) != len(X[0]):
+                raise ValueError("All samples must have the same number of features")
+
+        x_transpose = self.transpose(X)
+        xtx = self.matrix_multiplication(x_transpose, X)
+        xty = self.matrix_vector_multiplication(x_transpose, Y)
+        xtx_inv = self.inverse(xtx)
+
+        weights = self.matrix_vector_multiplication(xtx_inv, xty)
+
+        
+        mean_y = sum(Y) / len(Y)
+
+        num_samples = len(X)
+        num_features = len(X[0])
+        mean_x = [0] * num_features
+
+        for j in range(num_samples):
+            for k in range(num_features):
+                mean_x[k] += X[j][k]
+
+        for k in range(num_features):
+            mean_x[k] /= num_samples
+
+    
+        weighted_mean = 0
+        for i in range(len(weights)):
+            weighted_mean += weights[i] * mean_x[i]
+
+        bias = mean_y - weighted_mean
+        self.weights = weights
+        self.bias = bias
+        return self
+
+
+
+
+
+
+
 
 
 # test
@@ -73,25 +202,76 @@ if __name__ == "__main__":
     tests = [[[2, 0], [4, 1], [6, 0], [8, 1]], [[1, 2, 3], [4, 5, 6], [7, 8, 9]], []]
     for x in tests:
         transpose = model.transpose(x)
-        # print(transpose)
+        print(transpose)
 
     a = [[2, 4], [6, 8]]
     b = model.transpose(a)
-  
 
     matrix_mul = model.matrix_multiplication(b, a)
     print(matrix_mul)
 
     a = np.array(a)
     b = np.array(b)
-    print(b@a)
+    print(b @ a)
 
+    matrix = [[1, 2, 3], [4, 5, 6]]
+    vector = [10, 20, 30]
+
+    mvm = model.matrix_vector_multiplication(matrix, vector)
+    print(mvm)
+    # out put [140, 320]
+
+    print("\n")
+    A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    minor = model.minor_matrix(A, 0, 1)
+    print(minor)
+
+    # output [
+    #     [4, 6],
+    #     [7, 9]
+    # ]
+
+    A = [[2, 3], [4, 5]]
+    print("\n")
+    print(model.determinant(A))
+
+    A = [[1, 2, 3], [0, 4, 5], [1, 0, 6]]
+    print("\n")
+    print(model.determinant(A))
+    # output 22
+
+    A = [[1, 2, 3], [0, 4, 5], [1, 0, 6]]
+    print("\n")
+
+    print(model.cofactor_matrix(A))
+
+    # [
+    # [24, 5, -4],
+    # [-12, 3, 2],
+    # [-2, -5, 4]
+    # ]
+
+    print("\n")
+    print(model.adjugate(A))
+
+    A = [[1, 2, 3], [0, 4, 5], [1, 0, 6]]
+
+    print("\n")
+    print(model.inverse(A))
+
+    A = [[1, 2, 3], [0, 4, 5], [1, 0, 6]]
+
+    print(model.inverse(A))
+
+    A = [[1, 2], [2, 4]]
+
+    print(model.inverse(A))
 
 """
 
 Xt = [[2, 4, 6, 8],
       [0, 1, 0, 1]]
-
+r
 X  = [ [2, 0],
     [4, 1],
     [6, 0],
