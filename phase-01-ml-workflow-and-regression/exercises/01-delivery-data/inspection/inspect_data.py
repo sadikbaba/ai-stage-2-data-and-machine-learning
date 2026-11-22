@@ -1,4 +1,4 @@
-from main import (  # noqa: I001
+from training.main import (  # noqa: I001
     X_test,
     X_train,
     X_validation,

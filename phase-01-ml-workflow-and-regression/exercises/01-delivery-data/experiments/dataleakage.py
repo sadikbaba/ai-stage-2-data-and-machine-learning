@@ -1,4 +1,4 @@
-from manual_main import delivery_data, pd
+from training.manual_main import delivery_data, pd
 
 delivery_data["km_per_minute"] = (
     delivery_data["distance_km"] / delivery_data["delivery_minutes"]

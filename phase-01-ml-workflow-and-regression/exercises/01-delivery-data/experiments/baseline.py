@@ -1,6 +1,6 @@
 # Baseline model: predict the mean of the training set for all validation samples.
 
-from manual_main import Y_train, Y_validation
+from training.manual_main import Y_train, Y_validation
 
 # Training
 average_delivery_time = Y_train.mean()

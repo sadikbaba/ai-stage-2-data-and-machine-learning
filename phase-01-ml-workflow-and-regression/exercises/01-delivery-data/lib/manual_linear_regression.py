@@ -164,7 +164,6 @@ class ManualLinearRegression:
 
         weights = self.matrix_vector_multiplication(xtx_inv, xty)
 
-        
         mean_y = sum(Y) / len(Y)
 
         num_samples = len(X)
@@ -178,7 +177,6 @@ class ManualLinearRegression:
         for k in range(num_features):
             mean_x[k] /= num_samples
 
-    
         weighted_mean = 0
         for i in range(len(weights)):
             weighted_mean += weights[i] * mean_x[i]
@@ -188,12 +186,26 @@ class ManualLinearRegression:
         self.bias = bias
         return self
 
+    def predict(self, X):
+        if self.weights is None or self.bias is None:
+            raise RuntimeError("Model must be fitted before calling predict.")
 
+        if not X:
+            return []
 
+        predictions = []
+        for sample in X:
+            if len(sample) != len(self.weights):
+                raise ValueError(
+                    "Each sample must have the same number of features as weights."
+                )
 
+            pred = self.bias
+            for i in range(len(self.weights)):
+                pred += self.weights[i] * sample[i]
+            predictions.append(pred)
 
-
-
+        return predictions
 
 
 # test
@@ -259,13 +271,17 @@ if __name__ == "__main__":
     print("\n")
     print(model.inverse(A))
 
-    A = [[1, 2, 3], [0, 4, 5], [1, 0, 6]]
+    X = [[2, 0], [4, 1], [6, 0], [8, 1]]
+    Y = [12, 32, 35, 55]
 
-    print(model.inverse(A))
+    model.fit(X, Y)
 
-    A = [[1, 2], [2, 4]]
+    print("\n")
+    print("Weights:", model.weights)
+    print("Bias:", model.bias)
 
-    print(model.inverse(A))
+    print("predicted:", model.predict(X))
+
 
 """
 
