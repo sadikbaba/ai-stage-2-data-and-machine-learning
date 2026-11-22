@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-delivery_data = pd.read_csv("../delivery.csv")
+delivery_data = pd.read_csv("data/delivery.csv")
 
 x = delivery_data[["distance_km", "weather"]]
 y = delivery_data["delivery_minutes"]

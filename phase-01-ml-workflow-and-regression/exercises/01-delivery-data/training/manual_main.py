@@ -1,10 +1,12 @@
 import numpy as np
 import pandas as pd
+from lib.manual_linear_regression import ManualLinearRegression
 from lib.manual_onehot import ManualOneHotEncoder
 from lib.manual_scaler import ManualStandardScaler
+from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-delivery_data = pd.read_csv("../delivery.csv")
+delivery_data = pd.read_csv("data/delivery.csv")
 
 x = delivery_data[["distance_km", "weather"]]
 y = delivery_data["delivery_minutes"]
@@ -80,3 +82,35 @@ X_validation_matrix = np.column_stack(
 X_test_matrix = np.column_stack(
     (test_scaled_distance, test_encoded_weather)
 )
+
+X_train_model = X_train_matrix[:, :2]
+X_validation_model = X_validation_matrix[:, :2]
+X_test_model = X_test_matrix[:, :2]
+
+
+
+if __name__ == "__main__":
+    # Manual model
+    model = ManualLinearRegression()
+    model.fit(X_train_model, Y_train)
+    manual_pred = model.predict(X_validation_model)
+
+    print("=== Manual model ===")
+    print("weights:", model.weights)
+    print("bias:", model.bias)
+    print("validation predictions:", manual_pred)
+
+    # Scikit-learn model
+    sk_model = LinearRegression()
+    sk_model.fit(X_train_model, Y_train)
+    sk_pred = sk_model.predict(X_validation_model)
+
+    print("\n=== Scikit-learn model ===")
+    print("coef_:", sk_model.coef_)
+    print("intercept_:", sk_model.intercept_)
+    print("validation predictions:", sk_pred)
+
+    print("\n=== Actual validation targets ===")
+    print(Y_validation.to_list())
+
+

@@ -146,28 +146,24 @@ class ManualLinearRegression:
         return result
 
     def fit(self, X, Y):
+        X = np.asarray(X).tolist()
+        Y = np.asarray(Y).tolist()
 
         if not X or not X[0]:
             raise ValueError("X must contain samples and features")
 
         if len(X) != len(Y):
             raise ValueError("Number of samples in X must match number of targets in Y")
-        for i in range(len(X)):
-            sample = X[i]
-            if len(sample) != len(X[0]):
-                raise ValueError("All samples must have the same number of features")
-
-        x_transpose = self.transpose(X)
-        xtx = self.matrix_multiplication(x_transpose, X)
-        xty = self.matrix_vector_multiplication(x_transpose, Y)
-        xtx_inv = self.inverse(xtx)
-
-        weights = self.matrix_vector_multiplication(xtx_inv, xty)
-
-        mean_y = sum(Y) / len(Y)
 
         num_samples = len(X)
         num_features = len(X[0])
+
+        for i in range(num_samples):
+            if len(X[i]) != num_features:
+                raise ValueError("All samples must have the same number of features")
+
+        mean_y = sum(Y) / num_samples
+
         mean_x = [0] * num_features
 
         for j in range(num_samples):
@@ -176,6 +172,24 @@ class ManualLinearRegression:
 
         for k in range(num_features):
             mean_x[k] /= num_samples
+
+        X_centered = []
+        for j in range(num_samples):
+            centered_row = []
+            for k in range(num_features):
+                centered_row.append(X[j][k] - mean_x[k])
+            X_centered.append(centered_row)
+
+        Y_centered = []
+        for i in range(num_samples):
+            Y_centered.append(Y[i] - mean_y)
+
+        x_transpose = self.transpose(X_centered)
+        xtx = self.matrix_multiplication(x_transpose, X_centered)
+        xty = self.matrix_vector_multiplication(x_transpose, Y_centered)
+        xtx_inv = self.inverse(xtx)
+
+        weights = self.matrix_vector_multiplication(xtx_inv, xty)
 
         weighted_mean = 0
         for i in range(len(weights)):
@@ -186,7 +200,9 @@ class ManualLinearRegression:
         self.bias = bias
         return self
 
+    
     def predict(self, X):
+        X = np.asarray(X).tolist()
         if self.weights is None or self.bias is None:
             raise RuntimeError("Model must be fitted before calling predict.")
 
