@@ -607,10 +607,10 @@ At the start of every phase, create that phase's `README.md` using this outline 
 
 ## Exercises
 
-- [ ] Hand/intuition exercise
-- [ ] Coding exercise
-- [ ] Debugging exercise
-- [ ] Recall check
+- [x] Hand/intuition exercise
+- [x] Coding exercise
+- [x] Debugging exercise
+- [x] Recall check
 
 ## Project
 
@@ -622,25 +622,18 @@ At the start of every phase, create that phase's `README.md` using this outline 
 
 ### Build Checklist
 
-- [ ] Baseline
-- [ ] Training pipeline
-- [ ] Evaluation
-- [ ] Error analysis
-- [ ] Tests
-- [ ] Refactor
-- [ ] Documentation
-- [ ] Deployment if useful
+- [x] Baseline
+- [x] Training pipeline
+- [x] Evaluation
+- [x] Error analysis
+- [x] Tests
+- [x] Refactor
+- [x] Documentation
+- [x] Deployment if useful
 
 ## Rebuild From Memory
 
-- [ ] Explain the system without notes
-- [ ] Rebuild the core pipeline without tutorial code
-- [ ] Pass the phase milestone challenge
+- [x] Explain the system without notes
+- [x] Rebuild the core pipeline without tutorial code
+- [x] Pass the phase milestone challenge
 
-## Git Milestone
-
-- [ ] `git status`
-- [ ] `git add ...`
-- [ ] meaningful commit
-- [ ] `git push`
-```
