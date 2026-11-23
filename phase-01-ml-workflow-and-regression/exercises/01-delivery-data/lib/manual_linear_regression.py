@@ -200,7 +200,6 @@ class ManualLinearRegression:
         self.bias = bias
         return self
 
-    
     def predict(self, X):
         X = np.asarray(X).tolist()
         if self.weights is None or self.bias is None:

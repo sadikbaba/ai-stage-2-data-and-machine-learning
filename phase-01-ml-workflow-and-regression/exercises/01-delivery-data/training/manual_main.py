@@ -5,6 +5,7 @@ from lib.manual_onehot import ManualOneHotEncoder
 from lib.manual_scaler import ManualStandardScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+from lib.manual_knn_regression import ManualKNNRegressor
 
 delivery_data = pd.read_csv("data/delivery.csv")
 
@@ -69,24 +70,18 @@ test_encoded_weather = encode.transform(X_test["weather"])
 
 
 # matrix for machine learning
-X_train_matrix = np.column_stack(
-    (train_scaled_distance, train_encoded_weather)
-)
+X_train_matrix = np.column_stack((train_scaled_distance, train_encoded_weather))
 X_validation_matrix = np.column_stack(
     (
         validation_scaled_distance,
         validation_encoded_weather,
-        
     )
 )
-X_test_matrix = np.column_stack(
-    (test_scaled_distance, test_encoded_weather)
-)
+X_test_matrix = np.column_stack((test_scaled_distance, test_encoded_weather))
 
 X_train_model = X_train_matrix[:, :2]
 X_validation_model = X_validation_matrix[:, :2]
 X_test_model = X_test_matrix[:, :2]
-
 
 
 if __name__ == "__main__":
@@ -95,7 +90,7 @@ if __name__ == "__main__":
     model.fit(X_train_model, Y_train)
     manual_pred = model.predict(X_validation_model)
 
-    print("=== Manual model ===")
+    print("=== Manual Linear model ===")
     print("weights:", model.weights)
     print("bias:", model.bias)
     print("validation predictions:", manual_pred)
@@ -105,12 +100,39 @@ if __name__ == "__main__":
     sk_model.fit(X_train_model, Y_train)
     sk_pred = sk_model.predict(X_validation_model)
 
-    print("\n=== Scikit-learn model ===")
+    print("\n=== Scikit-learn Linear model ===")
     print("coef_:", sk_model.coef_)
     print("intercept_:", sk_model.intercept_)
     print("validation predictions:", sk_pred)
 
+    knn_model = ManualKNNRegressor(k=2)
+    knn_model.fit(X_train_model, Y_train)
+    knn_pred = knn_model.predict(X_validation_model)
+
+    print("\n=== Manual Knn model ===")
+    print("validation predictions:", knn_pred)
+
+    print("\n=== KNN neighbor investigation ===")
+    for query in X_validation_model:
+        distances = np.sqrt(
+            np.sum((X_train_model - query) ** 2, axis=1)
+        )
+
+        nearest_indices = np.argsort(distances)[:knn_model.k]
+
+        print("\nQuery:", query)
+        print("Nearest distances:", distances[nearest_indices])
+        print(
+            "Neighbor targets:",
+            Y_train.iloc[nearest_indices].to_list()
+        )
+
+    print("\n===Neighbor indices===")
+    print("Neighbor indices:", nearest_indices)
+    print(
+        "Neighbor feature rows:",
+        X_train.iloc[nearest_indices].to_dict("records")
+    )
+    
     print("\n=== Actual validation targets ===")
     print(Y_validation.to_list())
-
-
