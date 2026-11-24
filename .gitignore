@@ -21,3 +21,4 @@ eggs/
 
 lib64/
 parts/
+.ruff_cache

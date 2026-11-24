@@ -115,25 +115,17 @@ if __name__ == "__main__":
 
     print("\n=== KNN neighbor investigation ===")
     for query in X_validation_model:
-        distances = np.sqrt(
-            np.sum((X_train_model - query) ** 2, axis=1)
-        )
+        distances = np.sqrt(np.sum((X_train_model - query) ** 2, axis=1))
 
-        nearest_indices = np.argsort(distances)[:knn_model.k]
+        nearest_indices = np.argsort(distances)[: knn_model.k]
 
         print("\nQuery:", query)
         print("Nearest distances:", distances[nearest_indices])
-        print(
-            "Neighbor targets:",
-            Y_train.iloc[nearest_indices].to_list()
-        )
+        print("Neighbor targets:", Y_train.iloc[nearest_indices].to_list())
 
     print("\n===Neighbor indices===")
     print("Neighbor indices:", nearest_indices)
-    print(
-        "Neighbor feature rows:",
-        X_train.iloc[nearest_indices].to_dict("records")
-    )
+    print("Neighbor feature rows:", X_train.iloc[nearest_indices].to_dict("records"))
 
     sk_kkn_model = KNeighborsRegressor(n_neighbors=2)
     sk_kkn_model.fit(X_train_model, Y_train)
@@ -142,6 +134,5 @@ if __name__ == "__main__":
     print("\n=== Manual sk Knn model ===")
     print("validation predictions:", sk_knn_pred)
 
-    
     print("\n=== Actual validation targets ===")
     print(Y_validation.to_list())

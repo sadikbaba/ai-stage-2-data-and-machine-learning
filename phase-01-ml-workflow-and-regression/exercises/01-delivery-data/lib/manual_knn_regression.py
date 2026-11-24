@@ -7,7 +7,7 @@ class ManualKNNRegressor:
             raise TypeError("k must be an integer")
         if k <= 0:
             raise ValueError("k must be greater than 0")
-        
+
         self.X_train = None
         self.y_train = None
         self.k = k
@@ -25,13 +25,12 @@ class ManualKNNRegressor:
 
     def predict(self, X):
         if self.X_train is None:
-          raise ValueError("Model must be fitted before predict")
-        
+            raise ValueError("Model must be fitted before predict")
+
         X = np.asarray(X).tolist()
 
         if not X:
             return []
-
 
         # formula = d(X,A) = sqrt(((X1 - A1)**2) + ((X2- A2)**2))
         # take the of Num k sum them and divide by k
@@ -73,7 +72,6 @@ if __name__ == "__main__":
     queries = [[2, 0], [6, 0]]
 
     print(model.predict(queries))
-
 
     for value in [0, -1, 1.5, "2", True]:
         try:
