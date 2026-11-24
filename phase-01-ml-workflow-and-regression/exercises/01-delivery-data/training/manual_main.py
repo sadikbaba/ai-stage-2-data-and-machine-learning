@@ -1,11 +1,12 @@
 import numpy as np
 import pandas as pd
+from lib.manual_knn_regression import ManualKNNRegressor
 from lib.manual_linear_regression import ManualLinearRegression
 from lib.manual_onehot import ManualOneHotEncoder
 from lib.manual_scaler import ManualStandardScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-from lib.manual_knn_regression import ManualKNNRegressor
+from sklearn.neighbors import KNeighborsRegressor
 
 delivery_data = pd.read_csv("data/delivery.csv")
 
@@ -133,6 +134,14 @@ if __name__ == "__main__":
         "Neighbor feature rows:",
         X_train.iloc[nearest_indices].to_dict("records")
     )
+
+    sk_kkn_model = KNeighborsRegressor(n_neighbors=2)
+    sk_kkn_model.fit(X_train_model, Y_train)
+    sk_knn_pred = sk_kkn_model.predict(X_validation_model)
+
+    print("\n=== Manual sk Knn model ===")
+    print("validation predictions:", sk_knn_pred)
+
     
     print("\n=== Actual validation targets ===")
     print(Y_validation.to_list())
