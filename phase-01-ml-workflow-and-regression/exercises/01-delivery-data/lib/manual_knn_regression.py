@@ -15,15 +15,23 @@ class ManualKNNRegressor:
     def fit(self, X, y):
         X = np.asarray(X).tolist()
         y = np.asarray(y).tolist()
+
+        if not X or not y:
+            raise ValueError("Training data must not be empty")
+
         self.X_train = X
         self.y_train = y
         return self
 
     def predict(self, X):
+        if self.X_train is None:
+          raise ValueError("Model must be fitted before predict")
+        
         X = np.asarray(X).tolist()
 
         if not X:
             return []
+
 
         # formula = d(X,A) = sqrt(((X1 - A1)**2) + ((X2- A2)**2))
         # take the of Num k sum them and divide by k
