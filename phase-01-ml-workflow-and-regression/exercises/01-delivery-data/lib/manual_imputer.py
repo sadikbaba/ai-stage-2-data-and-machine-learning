@@ -102,3 +102,28 @@ if __name__ == "__main__":
     missing = [[2], [None], [8], [10], [3], [7]]
     imputer = ManualSimpleImputer(strategy="median")
     print(imputer.fit_transform(missing))
+
+
+    new_data = [
+    [2, "clear"],
+    [None, "rain"],
+    [8, "clear"],
+    [10, None],
+    [3, "rain"],
+]
+    print("\n")
+    imputer = ManualSimpleImputer(strategy="most_frequent")
+    imputer.fit(new_data)
+    print("most frequent:", imputer.transform(new_data))
+
+    new_data = [
+        [2],
+        [None],
+        [8],
+        [10],
+        [3],
+    ]
+    print("\n")
+    imputer = ManualSimpleImputer(strategy="median")
+    imputer.fit(new_data)
+    print("median:", imputer.transform(new_data))
