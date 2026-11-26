@@ -61,6 +61,7 @@ if __name__ == "__main__":
     r_metrics = RegressionMetrics()
     print(r_metrics.residuals(actual, predicted))
     print(r_metrics.squared_errors(actual, predicted))
+    print("\n")
     print(r_metrics.mae(actual, predicted))
     print(r_metrics.mse(actual, predicted))
     print(r_metrics.rmse(actual, predicted))
