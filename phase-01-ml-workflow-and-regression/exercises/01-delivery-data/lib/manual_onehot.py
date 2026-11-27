@@ -41,11 +41,21 @@ def is_known_category(category, categories):
 
 
 class ManualOneHotEncoder:
+    def __init__(self, drop_first=False):
+        self.drop_first = drop_first
+        self.categories = None
+        self.output_categories = None
+
     def fit(self, data):
         self.categories = get_unique_categories(data)
 
+        if self.drop_first:
+            self.output_categories = self.categories[1:]
+        else:
+            self.output_categories = self.categories
+
     def transform(self, data):
-        return encode_all(data, self.categories)
+        return encode_all(data, self.output_categories)
 
     def fit_transform(self, data):
         self.fit(data)
