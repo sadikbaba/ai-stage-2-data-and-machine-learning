@@ -442,7 +442,7 @@ Move faster if exit criteria are genuinely passed. Do not stretch a phase merely
 
 ## Portfolio Checklist
 
-- [ ] Regression prediction system
+- [x] Regression prediction system
 - [ ] Classification system
 - [ ] Fraud-detection style evaluation project
 - [ ] Recommendation system
@@ -452,7 +452,7 @@ Move faster if exit criteria are genuinely passed. Do not stretch a phase merely
 
 ## GitHub Project Checklist
 
-- [ ] Clear README
+- [x] Clear README
 - [ ] Dataset source/license noted
 - [ ] Reproducible environment/dependencies
 - [ ] No dataset secrets or credentials committed
